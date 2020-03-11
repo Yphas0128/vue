@@ -82,8 +82,6 @@ export default {
                     });
                 }
             })
-
-
         },
         addmenu(){
             this.get_menu_info();

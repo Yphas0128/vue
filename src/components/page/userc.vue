@@ -54,7 +54,7 @@
             <template slot-scope="scope">
                 <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="button" class="el-icon-delete" size="small" circle></el-button>
                 <el-button @click.native.prevent="editRow(scope.$index, scope.row)" type="button" class="el-icon-edit" size="small" circle></el-button>
-                <el-button type="button" icon="el-icon-check" size="small"  @click.prevent="addrole(scope.row)" circle></el-button>
+                <el-button type="button" icon="el-icon-check" size="small" title="用户" @click.prevent="addrole(scope.row)" circle></el-button>
             </template>
             </el-table-column>
         </el-table>

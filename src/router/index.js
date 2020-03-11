@@ -34,11 +34,6 @@ export default new Router({
           meta: { title: '用户管理' }
         },
         {
-          path:'/limit',
-          component : () =>import(/* webpackChunkName: "limit" */ '../components/page/limit.vue'),
-          meta: { title: '权限管理' }
-        },
-        {
           path:'/role',
           component : () =>import(/* webpackChunkName: "limit" */ '../components/page/role.vue'),
           meta: { title: '角色管理' }
@@ -47,6 +42,11 @@ export default new Router({
           path:'/menu',
           component : () =>import(/* webpackChunkName: "limit" */ '../components/page/menu.vue'),
           meta: { title: '菜单管理' }
+        },
+        {
+          path:'/hookinfo',
+          component : () =>import(/* webpackChunkName: "limit" */ '../components/page/hookinfo.vue'),
+          meta: { title: '后台控制' }
         },
         {
             path: '/table',

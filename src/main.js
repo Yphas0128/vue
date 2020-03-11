@@ -7,6 +7,7 @@ import router from './router'
 //import MyHttpServer from  '@/plugins/http.js'
 import qs from 'qs'
 import ElementUI from 'element-ui'
+import { Message } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/reset.css'
 import store from "@/store/index"
@@ -50,6 +51,10 @@ axios.interceptors.response.use(
               path: "/login",
               query: { redirect: router.currentRoute.fullPath } //登录成功后跳入浏览的当前页面
             });
+            break;
+            case 402:
+              Message.error("Error : " + error.response.data.msg);
+            break;
         }
       }
       return Promise.reject(error.response.data);

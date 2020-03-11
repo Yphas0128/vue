@@ -28,8 +28,7 @@
                                     <el-tag  closable @close="deleter(auth2.id,scope.row)" class="warning" v-for="(auth2,i) in auth1.children" :key=i>
                                             {{auth2.title}}
                                     </el-tag>
-                                </el-col>
-                                
+                                </el-col>       
                             </el-row> 
                         </el-col>        
                     </el-row>
@@ -40,36 +39,24 @@
             <el-table-column fixed type="index" label="#" width="50"></el-table-column>
             <el-table-column prop="name" label="姓名" width="150"></el-table-column>
             <el-table-column prop="created_at" label="创建时间" width="200"></el-table-column>
-            <el-table-column label="用户状态"  width="300">
+
+            <!--
+                        <el-table-column label="用户状态"  width="300">
                  <template slot-scope="scope">
-                    <el-switch
-                        v-model="scope.row.status"
-                        active-color="#13ce66"
-                        inactive-color="#ff4949"
-                        :active-value="'1'"
-                        :inactive-value="'0'"
+                    <el-switch v-model="scope.row.status" active-color="#13ce66" inactive-color="#ff4949" :active-value="'1'" :inactive-value="'0'"
                         @change="changeStatus($event,scope.row,scope.$index)"
                     />
                 </template>
 
             </el-table-column>
+            -->
             <el-table-column fixed="right"   label="操作" width="300">
             <template slot-scope="scope">
-                <el-button
-                @click.native.prevent="deleteRow(scope.$index, tableData)"
-                type="button"
-                class="el-icon-delete"
-                size="small" circle>
-
-                </el-button>
-                <el-button
-                @click.native.prevent="editRow(scope.$index, scope.row)"
-                type="button"
-                class="el-icon-edit"
-                size="small" circle>
-            
-                </el-button>
+                <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="button" class="el-icon-delete" size="small" circle></el-button>
+               <!--editRow(scope.$index, scope.row)--> 
+               <el-button @click.native.prevent="editHook(scope.$index, scope.row)" type="button" class="el-icon-edit" size="small" circle></el-button>
                 <el-button type="button" icon="el-icon-check" size="small"  @click.prevent="showTree(scope.row)" circle></el-button>
+            
             </template>
             </el-table-column>
         </el-table>
@@ -134,6 +121,22 @@
                 <el-button type="primary" @click="edituser">确 定</el-button>
             </div>
         </el-dialog>
+
+
+        <el-dialog title="编辑接口" :visible.sync="dialoghookVisible">
+            <el-form >
+                    <el-form-item  :label-width="formLabelWidth">
+                        <el-checkbox-group v-model="hooks" >
+                            <el-checkbox v-for="(u,k) in hooklists" :key="k"  :label="u.uri" border></el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+        
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialoghookVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submithook">确 定</el-button>
+            </div>
+        </el-dialog>
         
     </div>
 </template>
@@ -147,6 +150,7 @@ export default {
             dialogFormVisible: false,
             dialogaddVisible :false,
             dialogFormVisibleRight:false,
+            dialoghookVisible:false,
             form:{name:'',password:'',email:''},
             addform:{id:'',name:'',password:'',email:''},
             formLabelWidth:'',
@@ -156,15 +160,38 @@ export default {
             search:'',
             editIndex:0,
             arrkey:[],//选中的值
+            info:[],
+            hooks:[],
+            hooklists:[],
+            currentId:'',
         }
     },
     mounted(){
         this.get_user_data(this.pageSize,this.pageIndex);
     },
     methods:{
+        async submithook(){
+            const res =await this.$axios.post("/api/public/api/jwt/role/edithooks",{id:this.currentId,hooks:this.hooks});
+            this.$message.success(res.data.msg);
+            this.dialoghookVisible = false;
+            
+        },
+        editHook(index,role){
+
+            //编辑接口
+            this.gethooks(role.id);
+            this.currentId = role.id;
+            this.dialoghookVisible = true;
+
+        },
+        async gethooks(id){
+            const res = await this.$axios.post("/api/public/api/jwt/hook/gethook",{id:id});
+            this.hooklists  = res.data.data;
+            this.hooks      = res.data.hooks;
+        },
         async rightchange(){
             let node1 = this.$refs.tree.getCheckedKeys();
-            let  node2 = this.$refs.tree.getHalfCheckedKeys();
+            let node2 = this.$refs.tree.getHalfCheckedKeys();
             let nodes = [...node1,...node2];
             const res =  await this.$axios.post("/api/public/api/jwt/role/rights",{ids:nodes.join(','),currentId:this.currentId});
             if(res.data.result == 'success'){
@@ -173,6 +200,11 @@ export default {
             this.dialogFormVisibleRight = false;
             this.get_user_data(this.pageSize,this.pageIndex);
         
+        },
+        async addhooks(role){
+            const res = await this.$axios.post("/api/public/api/jwt/hook/gethook",{rId:role.id});
+            this.info = res.data.data;
+            this.dialoghookVisible =true;
         },
         async showTree(role){
            const res = await this.$axios.post("/api/public/api/jwt/role/gettree");
@@ -195,12 +227,9 @@ export default {
                     arrtemp.push(item1.id);
                 }
             })
-            console.log(arrtemp);
             this.arrkey = arrtemp;
-
-
-           this.currentId = role.id;
-           this.dialogFormVisibleRight =true;
+            this.currentId = role.id;
+            this.dialogFormVisibleRight =true;
 
         },
         async deleter(index,role){
@@ -339,5 +368,28 @@ export default {
     margin: auto;
     width: 40px;
     height: 40px;
+}
+.menus_list{
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+.apis{
+    margin-left: 15px;
+    float: left;
+}
+.content{
+    float: left;
+    margin-left: 15px;
+}
+.div_apis{
+    margin-bottom: 15px;
+    float: left;
+    width: 50%;
+}
+.div_apis:after{
+    content:'';
+    display: block;
+    clear:both;
 }
 </style>
