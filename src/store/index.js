@@ -33,6 +33,9 @@ const mutations = {
       //  localStorage.setItem("token", 'Bearer ' +token);
         state.token = 'Bearer ' + token;
    },
+   refresh_token(state,token){
+    state.token = token;
+   },
    set_username(state,name){
         state.username = name ;
    },
@@ -44,7 +47,7 @@ const mutations = {
 
 const actions = {
     refreshToken({commit},token) {
-        commit('set_token',token);
+        commit('refresh_token',token);
     }
 
 };

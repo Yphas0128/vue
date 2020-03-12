@@ -50,7 +50,7 @@
 
             </el-table-column>
             -->
-            <el-table-column fixed="right"   label="操作" width="300">
+            <el-table-column fixed="right"   label="操作" width="500">
             <template slot-scope="scope">
                 <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="button" class="el-icon-delete" size="small" circle></el-button>
                <!--editRow(scope.$index, scope.row)--> 

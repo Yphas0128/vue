@@ -12,6 +12,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/reset.css'
 import store from "@/store/index"
 import axios from 'axios'
+import '@/assets/fonts/iconfont.css' // 阿里图标
 Vue.prototype.$axios = axios
 
 axios.interceptors.request.use(config=>{
@@ -36,7 +37,7 @@ axios.interceptors.response.use(
 
     var token = response.headers.authorization
     if (token) {
-      Console.log(token);
+      console.log(token);
         // 如果 header 中存在 token，那么触发 refreshToken 方法，替换本地的 token
         store.dispatch('refreshToken', token)
     }

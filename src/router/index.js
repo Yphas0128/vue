@@ -71,6 +71,11 @@ export default new Router({
       component:Login
     },
     {
+      path:'/shop',
+      component: () => import(/* webpackChunkName: "404" */ '../components/shop/index.vue'),
+      meta: { title: '商城首页' }
+    },
+    {
         path: '*',
         redirect: '/404'
     }
