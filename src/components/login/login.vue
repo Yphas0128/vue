@@ -45,7 +45,7 @@ export default {
             var vm = this;
              this.$refs.login.validate(valid => {
                  if(valid){
-                     this.$axios.post('/api/public/api/jwt/common/login',this.param).then(function(res){
+                     this.$axios.post('/api/api/jwt/common/login',this.param).then(function(res){
                             vm.$store.commit("set_token", res.data.token);
                             vm.$store.commit('set_username',vm.param.name);
                             vm.$message.success('登录成功');

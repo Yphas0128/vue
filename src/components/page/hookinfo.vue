@@ -41,7 +41,7 @@ export default {
     },
     methods:{
         async getdata(id){
-            const res = this.$axios.post("/api/public/api/jwt/hook/gethook",{id:id});
+            const res = this.$axios.post("/api/api/jwt/hook/gethook",{id:id});
             this.info = res.data;
         }
 

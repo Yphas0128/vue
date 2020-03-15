@@ -75,9 +75,9 @@ export default {
             //验证规则
             vm.$refs.addform.validate(function(res){
                 if(res){
-                    vm.$axios.post("/api/public/api/jwt/menu/add",vm.addform).then(function(res){
+                    vm.$axios.post("/api/api/jwt/menu/add",vm.addform).then(function(res){
                         
-
+                        this.dialogaddVisible = false;
 
                     });
                 }
@@ -96,14 +96,14 @@ export default {
             this.select_id = ids.join(',');
         },
         async get_menu_info(){
-            const res = await this.$axios.post("/api/public/api/jwt/menu/getinfo");
+            const res = await this.$axios.post("/api/api/jwt/menu/getinfo");
             this.options = res.data.data;
 
 
         },
         async get_user_data(){
             //得到meus
-            const res = await this.$axios.post("/api/public/api/jwt/menu/getdata");
+            const res = await this.$axios.post("/api/api/jwt/menu/getdata");
             this.list = res.data.data;
         }
     }

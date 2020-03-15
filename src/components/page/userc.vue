@@ -150,7 +150,7 @@ export default {
     },
     methods:{
        async editrole(){
-            const res  = await this.$axios.post("/api/public/api/jwt/userc/editrole",{id:this.currentId,role:this.selectvalue});
+            const res  = await this.$axios.post("/api/api/jwt/userc/editrole",{id:this.currentId,role:this.selectvalue});
             if(res.data.result ==='success'){
                 this.$message.success(res.data.msg);
                 this.get_user_data();
@@ -158,7 +158,7 @@ export default {
             }
         },
         async addrole(row){
-            const res  = await this.$axios.post("/api/public/api/jwt/role/options");
+            const res  = await this.$axios.post("/api/api/jwt/role/options");
             this.options   = res.data.data;
             this.currentId = row.id;
             this.selectvalue = row.role_id;
@@ -166,7 +166,7 @@ export default {
         },
         edituser(){
             var vm = this;
-            this.$axios.post('/api/public/api/jwt/userc/edit',vm.addform).then(function(rs){
+            this.$axios.post('/api/api/jwt/userc/edit',vm.addform).then(function(rs){
                 vm.$message.success(rs.data.msg);
                 vm.tableData[vm.editIndex] = rs.data.user;
                 vm.dialogaddVisible = false;
@@ -190,7 +190,7 @@ export default {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消'
             }).then(()=>{
-                    this.$axios.post("/api/public/api/jwt/userc/change",{status:e,id:row.id}).then(function(res){
+                    this.$axios.post("/api/api/jwt/userc/change",{status:e,id:row.id}).then(function(res){
                         this.$message.success(res.data.msg);
                     })
             }).catch(action=>{
@@ -208,7 +208,7 @@ export default {
                 })
                 .then(() => {
                 
-                    this.$axios.post("/api/public/api/jwt/userc/del",{id:id}).then(function(res){
+                    this.$axios.post("/api/api/jwt/userc/del",{id:id}).then(function(res){
                         this.$message.success(res.data.msg);
                         this.tableData.splice(index,1);
                     })
@@ -243,7 +243,7 @@ export default {
         },
         submituser:function(){
             var vm = this;
-            this.$axios.post('/api/public/api/jwt/userc/add',vm.form).then(function(rs){
+            this.$axios.post('/api/api/jwt/userc/add',vm.form).then(function(rs){
                 vm.$message.success(rs.data.msg);
                   vm.dialogFormVisible = true;
             }).catch(function(rs){
@@ -257,14 +257,14 @@ export default {
         },
         getsearchdata:function(val,size,page){
             var vm = this;
-            this.$axios.post('/api/public/api/jwt/userc/getsearch',{val:val,size:size,page:page}).then(function(res){
+            this.$axios.post('/api/api/jwt/userc/getsearch',{val:val,size:size,page:page}).then(function(res){
                 vm.tableData = res.data.user.data;
                 vm.total     = res.data.user.total;
             });
         },
          get_user_data:function(pageSize,pageIndex){
              var vm = this;
-            this.$axios.post('/api/public/api/jwt/userc/getdata',{size:pageSize,page:pageIndex}).then(function(res){
+            this.$axios.post('/api/api/jwt/userc/getdata',{size:pageSize,page:pageIndex}).then(function(res){
                 vm.tableData = res.data.user.data;
                 vm.total     = res.data.user.total;
             });

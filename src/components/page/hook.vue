@@ -81,7 +81,7 @@ export default {
     methods:{
         getdata(pageSize,pageIndex){
             var vm = this;
-            this.$axios.post('/api/public/api/jwt/hook/getdata',{size:pageSize,page:pageIndex}).then(function(res){
+            this.$axios.post('/api/api/jwt/hook/getdata',{size:pageSize,page:pageIndex}).then(function(res){
                 vm.list = res.data.data.data;
                 vm.total= res.data.data.total;
             });
@@ -95,7 +95,7 @@ export default {
             var vm =this;
             this.$refs.addform.validate(res=>{
                 if(res){
-                    vm.$axios.post("/api/public/api/jwt/hook/add",vm.addform).then(res=>{
+                    vm.$axios.post("/api/api/jwt/hook/add",vm.addform).then(res=>{
                         vm.$message.success(res.data.msg);
                         this.dialogaddVisible = false;
                     })

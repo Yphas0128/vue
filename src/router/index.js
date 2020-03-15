@@ -59,6 +59,11 @@ export default new Router({
           meta: { title: '系统首页' }
         },
         {
+          path: '/adv_postion',
+          component: () => import(/* webpackChunkName: "dashboard" */ '../components/adv/index.vue'),
+          meta: { title: '广告位管理'}
+        },
+        {
           path: '/404',
           component: () => import(/* webpackChunkName: "404" */ '../components/page/404.vue'),
           meta: { title: '404' }

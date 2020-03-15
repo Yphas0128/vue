@@ -13,7 +13,8 @@ module.exports = {
     proxyTable: {
       //代理
       '/api': {
-          target: 'http://laravel.com/laravel',
+          target: 'http://118.25.79.235:8077',
+          //'http://laravel.com/laravel',
           changeOrigin: true,
           pathRewrite: {
               '^/api': '/'

@@ -18,8 +18,6 @@ Vue.prototype.$axios = axios
 axios.interceptors.request.use(config=>{
   //在所有请求头部添加token值
   const token =  store.getters.getToken;
-  //localStorage.getItem('token');
-  //store.state.token;
   if(token){
       config.headers.Authorization = token;
   }
@@ -37,7 +35,6 @@ axios.interceptors.response.use(
 
     var token = response.headers.authorization
     if (token) {
-      console.log(token);
         // 如果 header 中存在 token，那么触发 refreshToken 方法，替换本地的 token
         store.dispatch('refreshToken', token)
     }

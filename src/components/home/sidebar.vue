@@ -71,7 +71,7 @@ export default {
     },
     methods:{
        async getmuenus() {
-           const res = await this.$axios.post("/api/public/api/jwt/common/getMenus");           
+           const res = await this.$axios.post("/api/api/jwt/common/getMenus");           
             this.items =res.data.data;
         },
 
