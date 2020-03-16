@@ -23,9 +23,19 @@
                    <!-- 分组好友和临时聊天列表Tab切换 -->
             <div class="chat_friend_interface_tab">
                 <ul>
-                    <li class="border_b_show">消息<div class="border_b"></div></li>
-                    <li @click="$message.error('暂无此功能')">联系人<div class="border_b"></div></li>
+                    <li class="border_b_show">联系人<div class="border_b"></div></li>
+                    <li >消息<div class="border_b"></div></li>
                 </ul>
+            </div>
+
+                  <!-- 好友的内容块 -->
+            <div class="chat_friend_interface_content">
+                <dl class="chat_handle" >
+                    <el-tree class="filter-tree" @node-click="handleNodeClick" :data="userinfos"  :props="defaultProps" default-expand-all  ref="tree">
+                        
+                   
+                    </el-tree>
+                </dl>
             </div>
 
 
@@ -33,10 +43,12 @@
                    <!-- 聊天界面 -->
             <div class="chat_interface" >
                 <!-- 左侧显示聊天好友 -->
+                   {{onChatIndex}}
                 <div class="chat_interface_left">
-                    <dl :class="k==onChatIndex?'active':'active2'" v-for="(v,k) in onChat" :key="k">
-                        <dt><img :src="v.avatar||'@/assets/img/default_avatar.png'" alt=""></dt>
-                        <dd>{{v.nickname||'-'}}</dd>
+                 
+                    <dl :class="k==onChatIndex?'active':'active2'" @click="onChatclick(k)" v-for="(v,k) in onChat" :key="k">
+                        <dt><img src="@/assets/img/default_avatar.png" alt=""></dt>
+                        <dd>{{v.name||'-'}}</dd>
                         <dd class="close" @click="closeWin(onChat[onChatIndex])"><i class="icon iconfont">&#xebb2;</i></dd>
                     </dl>
                 </div>
@@ -48,12 +60,15 @@
                     <div class="chat_interface_right_content">
                         <div>
                             <el-scrollbar ref="myScrollbar">
-                                <div  v-for="(v,k) in chat_msg" :key="k">
-        
+                                <div  class="chat_interface_msg_item me" v-for="(v,k) in chat_msg" :key="k">
+                                    <div class="chat_interface_msg_avatar">
+                                         <img src='@/assets/img/default_avatar.png'   alt="">
+                                    </div>    
+                                    <div class="chat_interface_msg_time"> {{v.created_at||formatDateAuto('yyyy-MM-dd hh:mm:ss')}}</div>  
                                     <div class="chat_interface_msg">
-                                        <div>{{v}}</div>
+                                        <div>{{v.msg}}</div>
                                     </div>
-                                </div>
+                                </div>                             
                             </el-scrollbar>
                         
                         </div>
@@ -98,7 +113,6 @@ export default {
           insert:'',
           minimizes:this.minimize,
           miniItems:this.miniItem,
-          webSocketLink:"ws://127.0.0.1:2346",
           music:"/music/chat.wav", // 播放音频地址
           upload_headers:{},
           page:1, // 聊天页码
@@ -109,10 +123,7 @@ export default {
               user_id:0,
               to_user_id:0,
           }, 
-          onChat:[
-              {nickname:'1'},
-              {nickname:'2'},
-          ],
+          onChat:[],
           onChatIndex:0,
           sendMsg:{
               type:'text', // 类型
@@ -124,44 +135,84 @@ export default {
           chat_friend:{}, // 好友列表
           websocket:null,
           chat_msg:[],
-
+          userinfos:[],
+          defaultProps: {
+            children: 'children',
+            label: 'name'
+          }
         }
       
     },
     created(){
-        this.websocketInit();
-
-
+        //this.websocketInit();
+        this.getdata();
     },
     methods:{
-
+        onChatclick(k){
+            this.onChatIndex = k;
+        },
+        handleNodeClick(data) {
+           this.onChat.push(data);
+           this.websocketInit();
+           this.getdata();
+        },
+        formatDateAuto(t){ 
+            let yy = new Date().getFullYear();
+            let mm = new Date().getMonth()+1;
+            let dd = new Date().getDate();
+            let hh = new Date().getHours();
+            let mf = new Date().getMinutes()<10 ? '0'+new Date().getMinutes() : new Date().getMinutes();
+            let ss = new Date().getSeconds()<10 ? '0'+new Date().getSeconds() : new Date().getSeconds();
+            return yy+'-'+mm+'-'+dd+' '+hh+':'+mf+':'+ss;
+        },
         chatUpload(){
+
+
+
+
+
+
+
         },
         websocketInit(){
-            console.log("go");
-            this.websocket = new WebSocket("ws://118.25.79.235:8078/ws/");
-            this.websocket.onopen = function (event) {
+            let that = this;
+            that.websocket = new WebSocket("ws://118.25.79.235:8078/ws/");
+
+            //多个？
+            that.websocket.onopen = function (event) {
                 console.log("已建立 WebSocket 连接");
             };
-            let that = this;
-            this.websocket.onmessage = function (event) {
+            that.websocket.onmessage = function (event) {
                 // 接收到 WebSocket 服务器返回消息时触发
                 let data = JSON.parse(event.data);
-                that.chat_msg.push( data.message);
+                console.log(data);
+                
+                that.chat_msg.push(data);
             };
-            this.websocket.onerror = function (event) {
+            that.websocket.onerror = function (event) {
                 console.log("与 WebSocket 通信出错");
             };
-            this.websocket.onclose = function (event) {
+            that.websocket.onclose = function (event) {
                 console.log("断开 WebSocket 连接");
             };
+            
         },
         send(){
            let content =  this.sendMsg.content.content;
+           console.log(content);
+            let touserid   = this.userinfos[this.onChatIndex]['id'];
+            
             //发送消息
-             this.websocket.send('{"type":"text","content":"' +content + '"}') ;
+             this.websocket.send('{"type":"text","to_user":"'+touserid+'","msg":"' +content + '"}') ;
              console.log("send");
              
+
+        },
+       async getdata(){
+           let id = this.userinfos[this.onChatIndex];
+            const res = await this.$axios.post("/api/api/jwt/shop/message/getdata",{id:id});
+            this.chat_msg  = res.data.messages;
+            this.userinfos = res.data.users;
 
         }
     }
@@ -228,7 +279,7 @@ export default {
         dl.active{
             background: #222;
             dd{
-                color:#fff;
+                color:#f56c6c;
             }
         }
         dl.active2{
