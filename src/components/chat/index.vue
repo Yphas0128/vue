@@ -105,7 +105,7 @@
     </div>
 </template>
 <script>
-
+import io from 'socket.io-client';
 export default {
 
     data(){
@@ -144,7 +144,17 @@ export default {
       
     },
     created(){
-        this.websocketInit();
+        
+        const socket = io('http://118.25.79.235:8078',{
+               path: '/ws',
+               transports: ['websocket']
+        });
+        
+        socket.on('connect', (data) => {
+                    console.log('open', data);
+        })
+
+        //this.websocketInit();
         this.getdata();
     },
     methods:{

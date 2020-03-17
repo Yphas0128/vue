@@ -15,6 +15,11 @@ import axios from 'axios'
 import '@/assets/fonts/iconfont.css' // 阿里图标
 Vue.prototype.$axios = axios
 
+//Vue.use(new VueSocketIO({
+   //debug:true,
+   //connection:'http://118.25.79.235:8078',
+//}));
+
 axios.interceptors.request.use(config=>{
   //在所有请求头部添加token值
   const token =  store.getters.getToken;
