@@ -144,17 +144,18 @@ export default {
       
     },
     created(){
-        //this.websocketInit();
+        this.websocketInit();
         this.getdata();
     },
     methods:{
         onChatclick(k){
             this.onChatIndex = k;
+              this.getdata();
         },
         handleNodeClick(data) {
            this.onChat.push(data);
-           this.websocketInit();
-           this.getdata();
+          /// this.websocketInit();
+        
         },
         formatDateAuto(t){ 
             let yy = new Date().getFullYear();
@@ -209,8 +210,9 @@ export default {
 
         },
        async getdata(){
-           let id = this.userinfos[this.onChatIndex];
-            const res = await this.$axios.post("/api/api/jwt/shop/message/getdata",{id:id});
+            let index = this.onChatIndex;
+            let id =  this.userinfos.length != 0?this.userinfos[index]['id']:0;
+            const res = await this.$axios.post("/api/api/jwt/message/getdata",{id:id});
             this.chat_msg  = res.data.messages;
             this.userinfos = res.data.users;
 
