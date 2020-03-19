@@ -79,9 +79,6 @@
                     <div class="chat_interface_right_send">
                         <div class="chat_interface_right_send_tool">
                             <div class="tool_item chat_handle">
-
-
-
                             </div>
                             <div class="tool_item chat_handle">
                                <!-- <el-upload action="chatUpload" :headers="upload_headers" :show-file-list="false" :on-success="chatUpload" >
@@ -105,14 +102,15 @@
     </div>
 </template>
 <script>
-import io from 'socket.io-client';
+import socket from "@/components/chat/socket.js";
 export default {
-
     data(){
         return{
           insert:'',
-          minimizes:this.minimize,
-          miniItems:this.miniItem,
+          minimizes:true,
+          //this.minimize,
+          miniItems:true,
+          //this.miniItem,
           music:"/music/chat.wav", // 播放音频地址
           upload_headers:{},
           page:1, // 聊天页码
@@ -139,20 +137,18 @@ export default {
           defaultProps: {
             children: 'children',
             label: 'name'
-          }
+          },
+          src:'http://118.25.79.235:8078',
+          socket:null
         }
       
     },
     created(){
+    
         
-        const socket = io('http://118.25.79.235:8078',{
-               path: '/ws',
-               transports: ['websocket']
-        });
-        
-        socket.on('connect', (data) => {
-                    console.log('open', data);
-        })
+        socket.on('connect', async () => {
+            console.log('websocket connected: ' + socket.connected);
+       });
 
         //this.websocketInit();
         this.getdata();
@@ -210,12 +206,31 @@ export default {
         },
         send(){
            let content =  this.sendMsg.content.content;
-           console.log(content);
-            let touserid   = this.userinfos[this.onChatIndex]['id'];
+           let touserid   = this.userinfos[this.onChatIndex]['id'];
+           if(content!=""){
+                const msg = content; // 防止xss
+                const obj = {
+                    username: touserid,
+                    src: this.src,
+                    img: '',
+                    msg,
+                    time: new Date(),
+                };
+                // 传递消息信息
+                socket.emit('message', obj);
+
+
+           }
+        
+
+
+
+           //console.log(content);
+            //let touserid   = this.userinfos[this.onChatIndex]['id'];
             
             //发送消息
-             this.websocket.send('{"type":"text","to_user":"'+touserid+'","msg":"' +content + '"}') ;
-             console.log("send");
+            // this.websocket.send('{"type":"text","to_user":"'+touserid+'","msg":"' +content + '"}') ;
+            // console.log("send");
              
 
         },

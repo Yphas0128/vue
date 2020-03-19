@@ -68,8 +68,11 @@
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
-                <el-form-item  v-model="ggform.date" label="日期" :label-width="formLabelWidth" >
-                  
+                <el-form-item   label="日期" :label-width="formLabelWidth" >
+                    <div class="block">
+                        <el-date-picker v-model="ggform.date"  type="daterange" start-placeholder="开始日期"  end-placeholder="结束日期" :default-time="['12:00:00']"></el-date-picker>
+                    </div>
+   
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -91,10 +94,10 @@ export default {
             diaadvddVisible:false,
             diaggddVisible:false,
             upload_headers:{},
-            ggform:{id:'',name:''},
+            ggform:{id:'',name:'',date:'',imageUrl:''},
             imageUrl: '',
             formLabelWidth:'100px',
-            upaction :'/api/public/api/jwt/adv/upload',
+            upaction :'/api/api/jwt/adv/upload',
             rules:{
                 name:[{ required: true, message: '请输入名称', trigger: 'blur' }],
                 api_height:[{ required: true, message: '请输入高度', trigger: 'blur' }],
@@ -111,18 +114,26 @@ export default {
         this.getdata();
     },
     methods:{
-        handleAvatarSuccess(){
-            
+        async savegg(){
+            const res  = await this.$axios.post("/api/api/jwt/adv/addadv",{data:this.ggform})
+            this.$message.success(res.data.msg);
+            this.diaggddVisible =false;
+
+
+        },
+        handleAvatarSuccess(res, file){
+            this.ggform.imageUrl  = res.path;
+            this.imageUrl= URL.createObjectURL(file.raw);
         },
         addgg(rows){
-            console.log(rows);
+            this.ggform.id  = rows.id;
             this.diaggddVisible =true;
 
 
 
         },
         async   getdata(){
-            const res = await  this.$axios.post("/api/public/api/jwt/adv/getdata");
+            const res = await  this.$axios.post("/api/api/jwt/adv/getdata");
             this.list = res.data.data;
         },
         addadv(){
@@ -132,12 +143,10 @@ export default {
          saveadv(){
             var vm =this;
             vm.$refs.addform.validate(function(res){
-               vm.$axios.post("/api/public/api/jwt/adv/add",vm.addform).then(res=>{
-
-
+               vm.$axios.post("/api/api/jwt/adv/add",vm.addform).then(res=>{
+                 vm.$message.success(res.data.msg);
+                 vm.diaggddVisible = false;
                })
-
-
             })
         }
 

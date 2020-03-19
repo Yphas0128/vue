@@ -32,7 +32,15 @@ export default {
         
     },
     created(){
-
+        this.getimgs();
+    },
+    methods:{
+        async getimgs(){
+            const res = await this.$axios.post('/api/api/jwt/adv/getadv');
+            this.banner_list = res.data.data;
+            console.log(res);
+            
+        }
     }
    
 }

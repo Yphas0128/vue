@@ -55,7 +55,7 @@ axios.interceptors.response.use(
               query: { redirect: router.currentRoute.fullPath } //登录成功后跳入浏览的当前页面
             });
             break;
-            case 402:
+            default:
               Message.error("Error : " + error.response.data.msg);
             break;
         }
