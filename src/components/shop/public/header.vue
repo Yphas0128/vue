@@ -26,13 +26,13 @@
                             <router-link to="/">首页</router-link>
                         </li>
                         <li>
-                            <router-link to="/goods/seckill">秒杀</router-link>
+                            <router-link to="/shop/seckill">秒杀</router-link>
                         </li>
                         <li>
-                            <router-link to="/groupbuy/list/keywords.">拼团</router-link>
+                            <router-link to="/shop/list">拼团</router-link>
                         </li>
                         <li>
-                            <router-link to="/integral/index">积分商城</router-link>
+                            <router-link to="/shop/integral">积分商城</router-link>
                         </li>
                     </ul>
                 </div>

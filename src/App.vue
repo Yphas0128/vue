@@ -13,4 +13,5 @@ export default {
 
 <style>
   @import "./assets/css/color-dark.css";
+  @import './assets/css/reset.css'
 </style>

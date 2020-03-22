@@ -34,7 +34,9 @@ const mutations = {
         state.token = 'Bearer ' + token;
    },
    refresh_token(state,token){
+    console.log(token,'b');
     state.token = token;
+    console.log( state.token,'b');
    },
    set_username(state,name){
         state.username = name ;
@@ -47,6 +49,8 @@ const mutations = {
 
 const actions = {
     refreshToken({commit},token) {
+        console.log(token,'aa');
+        
         commit('refresh_token',token);
     }
 

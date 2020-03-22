@@ -1,5 +1,5 @@
 <template>
-      <div >
+      <div>
         <el-carousel :height="height">
             <el-carousel-item v-for="(v,k) in list" :key="k">
                 <div class="shop_banner" :style="'background-position: center;background-image:url('+v.path+');'"><router-link :to="v.adv_link||'#'"><div style="width:1200px;height:450px;display:block;"></div></router-link></div>

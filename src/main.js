@@ -9,16 +9,16 @@ import qs from 'qs'
 import ElementUI from 'element-ui'
 import { Message } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'
-import '@/assets/css/reset.css'
 import store from "@/store/index"
 import axios from 'axios'
 import '@/assets/fonts/iconfont.css' // 阿里图标
+import {formatDate} from '@/plugins/function.js' // 公共方法
 Vue.prototype.$axios = axios
 
-//Vue.use(new VueSocketIO({
-   //debug:true,
-   //connection:'http://118.25.79.235:8078',
-//}));
+// Vue.use(new VueSocketIO({
+//    debug:true,
+//    connection:'http://118.25.79.235:8078',
+// }));
 
 axios.interceptors.request.use(config=>{
   //在所有请求头部添加token值
@@ -33,6 +33,11 @@ error=>{
 })
 
 
+// 时间格式化
+Vue.filter('formatDate', function (time) {
+  var date = new Date(time*1000);
+  return formatDate(date, 'yyyy-MM-dd hh:mm');
+});
 //拦截
 // 
 axios.interceptors.response.use(

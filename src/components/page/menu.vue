@@ -76,9 +76,8 @@ export default {
             vm.$refs.addform.validate(function(res){
                 if(res){
                     vm.$axios.post("/api/api/jwt/menu/add",vm.addform).then(function(res){
-                        
-                        this.dialogaddVisible = false;
-
+                        vm.$message.success(res.data.msg);
+                        vm.dialogaddVisible = false;
                     });
                 }
             })

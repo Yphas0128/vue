@@ -64,10 +64,20 @@ export default new Router({
           meta: { title: '广告位管理'}
         },
         {
-          path: '/404',
-          component: () => import(/* webpackChunkName: "404" */ '../components/page/404.vue'),
-          meta: { title: '404' }
-      },
+          path: '/seckill',
+          component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/seckill.vue'),
+          meta: { title: '秒杀管理'}
+        },
+        {
+          path: '/goods_class',
+          component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/goods_class.vue'),
+          meta: { title: '商品分类'}
+        },
+        {
+          path: '/goods',
+          component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/goods.vue'),
+          meta: { title: '商品管理'}
+        },
       ]
     },
     {
@@ -77,12 +87,43 @@ export default new Router({
     },
     {
       path:'/shop',
-      component: () => import(/* webpackChunkName: "404" */ '../components/shop/index.vue'),
-      meta: { title: '商城首页' }
+      component: () => import(/* webpackChunkName: "404" */ '../components/shop/common.vue'),
+      //meta: { title: '商城首页' },
+      children:[
+            {
+              path:'/',
+              component: () => import(/* webpackChunkName: "404" */ '../components/shop/index.vue'),
+              meta: { title: '商城首页' },
+            },
+            {
+              path:'seckill',
+              component: () => import(/* webpackChunkName: "404" */ '../components/shop/seckill/index.vue'),
+              meta: { title: '秒杀' },
+            },
+            {
+              path:'good/info/:id',
+              component: () => import(/* webpackChunkName: "404" */ '../components/shop/good/info.vue'),
+              meta: { title: '支付界面' },
+            }
+
+
+
+
+
+      ]
+
+
+
+
     },
+    // {
+    //     path: '*',
+    //     redirect: '/404'
+    // },
     {
-        path: '*',
-        redirect: '/404'
-    }
+      path: '/404',
+      component: () => import(/* webpackChunkName: "404" */ '../components/page/404.vue'),
+      meta: { title: '404' }
+  },
   ]
 })

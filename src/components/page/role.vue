@@ -8,7 +8,7 @@
                 <el-button type="primary" icon="el-icon-plus" @click="adduser">创建用户</el-button>
             </div>
         <el-table :data="tableData" border> 
-            <el-table-column fixed type="expand"  width="150">
+            <el-table-column fixed type="expand"  width="250">
                 <template slot-scope="scope">
                     <span v-if="scope.row.auth.length ===0">无权限</span>
                     <el-row v-for="(auth,i) in scope.row.auth" :key=i>

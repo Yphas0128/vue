@@ -118,8 +118,6 @@ export default {
             const res  = await this.$axios.post("/api/api/jwt/adv/addadv",{data:this.ggform})
             this.$message.success(res.data.msg);
             this.diaggddVisible =false;
-
-
         },
         handleAvatarSuccess(res, file){
             this.ggform.imageUrl  = res.path;
@@ -128,9 +126,6 @@ export default {
         addgg(rows){
             this.ggform.id  = rows.id;
             this.diaggddVisible =true;
-
-
-
         },
         async   getdata(){
             const res = await  this.$axios.post("/api/api/jwt/adv/getdata");

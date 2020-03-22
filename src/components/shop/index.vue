@@ -1,56 +1,38 @@
 <template>
     <div>
-        <div class="wrapper">
-            <div class="shop_head">
-                <v-top></v-top> 
-                <v-head></v-head>
-                <v-chat></v-chat>
-            </div>
-            <div><v-banner :list="banner_list"></v-banner></div>
+        <v-banner :list="banner_list"></v-banner><!--轮播图-->
+        <div class="store_body">
+                <v-product></v-product>
         </div>
     </div>
 </template>
 <script>
-import vTop from "@/components/shop/public/top.vue"
-import vHead from "@/components/shop/public/header.vue"
+import vProduct from "@/components/shop/product.vue"
 import vBanner from "@/components/shop/public/banner.vue"
-import vChat  from "@/components/chat/index.vue"
 export default {
     data(){
         return{
-            banner_list:[
-               // {path:require("@/assets/img/login-bg.jpg")},
-               // {path:require("@/assets/img/logo.jpg")}
-            ],  // 幻灯片    
+            banner_list:[],  
         }
     },
     components:{
-        vTop,
-        vHead,
         vBanner,
-        vChat,
-        
+        vProduct
     },
     created(){
-        this.getimgs();
+     this.getimgs();
     },
     methods:{
         async getimgs(){
             const res = await this.$axios.post('/api/api/jwt/adv/getadv');
-            this.banner_list = res.data.data;
-            console.log(res);
-            
+            this.banner_list = res.data.data;   
         }
     }
-   
 }
 </script>
-<style>
-.shop_head{
-    z-index: 666;
-    position: fixed;
+<style >
+.store_body{
+    padding: 50px 0;
     background: #fff;
-    left:0;
-    right: 0;
 }
 </style>
