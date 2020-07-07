@@ -21,6 +21,15 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm()">登录</el-button>
                 </div>
+              
+                <el-divider>其他登录方式</el-divider>
+                    <div class="other_login">
+                        <ul>
+                            <!-- 只要微信登录 -->
+                            <li @click="wechat_login"><i class="icon iconfont" style="color:#50b674">&#xe73b;</i></li>
+                            <li><i class="icon iconfont" style="color:#06b4fd">&#xe60b;</i></li>
+                        </ul>
+                    </div>  
             </el-form>
         </div>
     </div>
@@ -41,6 +50,9 @@ export default {
     },
     methods:{
         //关于element-ui 验证
+        wechat_login(){
+
+        },
        submitForm(){  
             var vm = this;
              this.$refs.login.validate(valid => {
@@ -103,5 +115,19 @@ export default {
     font-size: 12px;
     line-height: 30px;
     color: #fff;
+}
+.other_login{
+   width: 82px;
+   margin:0 auto;
+}
+.other_login ul li{
+    float: left;
+    margin-right: 20px;
+ }
+.other_login ul li i{
+    font-size: 28px;
+}
+.other_login ul li:last-child{
+    margin-right: 0;
 }
 </style>

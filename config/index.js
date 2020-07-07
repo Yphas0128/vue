@@ -14,6 +14,8 @@ module.exports = {
       //代理
       '/api': {
           target: 'http://118.25.79.235:8077',
+          //'https://qecho.cn:8077',
+          //'http://118.25.79.235:8077',
           //'http://laravel.com/laravel',
           changeOrigin: true,
           pathRewrite: {

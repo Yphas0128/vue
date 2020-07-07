@@ -146,9 +146,9 @@ export default {
     created(){
     
         
-        socket.on('connect', async () => {
-            console.log('websocket connected: ' + socket.connected);
-       });
+    //     socket.on('connect', async () => {
+    //         console.log('websocket connected: ' + socket.connected);
+    //    });
 
         //this.websocketInit();
         this.getdata();
